@@ -1,3 +1,6 @@
+# Remove build folder
+build/
+
 # Remove Kotlin test file
 src/test/kotlin/*
 
