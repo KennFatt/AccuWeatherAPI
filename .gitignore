@@ -1,3 +1,6 @@
+# Remove Kotlin test file
+src/test/kotlin/*
+
 # Compiled class file
 *.class
 
