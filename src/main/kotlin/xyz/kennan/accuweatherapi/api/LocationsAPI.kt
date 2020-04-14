@@ -17,10 +17,7 @@ class LocationsAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweath
             createRequest(requestParams, "/cities/geoposition/search")
         )
 
-        return when (code) {
-            200 -> body
-            else -> null
-        }
+        return if (code == 200) body else null
     }
 
     fun getByIPAddress(ipaddr: String, language: String = "en-us", details: Boolean = false): String? {
@@ -35,9 +32,6 @@ class LocationsAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweath
             createRequest(requestParams, "/cities/ipaddress")
         )
 
-        return when (code) {
-            200 -> body
-            else -> null
-        }
+        return if (code == 200) body else null
     }
 }

@@ -23,10 +23,7 @@ class ForecastAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweathe
             createRequest(requestParams, additionalEndPoint = "/daily/${daysInString}/${locationKey}")
         )
 
-        return when (code) {
-            200 -> body
-            else -> null
-        }
+        return if (code == 200) body else null
     }
 
     fun getHourlyForecast(locationKey: String, hours: Int = 1, language: String = "en-us", details: Boolean = false, metric: Boolean = false): String? {
@@ -49,10 +46,7 @@ class ForecastAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweathe
             createRequest(requestParams, additionalEndPoint = "/hourly/${hoursInString}/${locationKey}")
         )
 
-        return when (code) {
-            200 -> body
-            else -> null
-        }
+        return if (code == 200) body else null
     }
 
 }
