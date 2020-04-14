@@ -2,18 +2,20 @@ package xyz.kennan.accuweatherapi.api
 
 import xyz.kennan.accuweatherapi.AccuWeather
 
-class LocationsAPI (aw: AccuWeather) : BaseAPI(aw) {
+class LocationsAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweather.com/locations/v1") {
 
     fun getByGeoPosition(latitude: String, longitude: String, language: String = "en-us", details: Boolean = false, toplevel: Boolean = false): String? {
-        val url =
-                "http://dataservice.accuweather.com/locations/v1/cities/geoposition/search" +
-                "?apikey=${accuWeather.apiKey}" +
-                "&q=${latitude},${longitude}" +
-                "&language=${language}" +
-                "&details=${details}" +
-                "&toplevel=${toplevel}"
+        val requestParams = hashMapOf<String, Any>(
+            "apikey" to accuWeather.apiKey,
+            "q" to "${latitude},${longitude}",
+            "language" to language,
+            "details" to details,
+            "toplevel" to toplevel
+        )
 
-        val (code, body) = httpRequest.withGET(url)
+        val (code, body) = accuWeather.httpRequest.withGET(
+            createRequest(requestParams, "/cities/geoposition/search")
+        )
 
         return when (code) {
             200 -> body
@@ -22,14 +24,16 @@ class LocationsAPI (aw: AccuWeather) : BaseAPI(aw) {
     }
 
     fun getByIPAddress(ipaddr: String, language: String = "en-us", details: Boolean = false): String? {
-        val url =
-                "http://dataservice.accuweather.com/locations/v1/cities/ipaddress" +
-                "?apikey=${accuWeather.apiKey}" +
-                "&q=${ipaddr}" +
-                "&language=${language}" +
-                "&details=${details}"
+        val requestParams = hashMapOf<String, Any>(
+            "apikey" to accuWeather.apiKey,
+            "q" to ipaddr,
+            "language" to language,
+            "details" to details
+        )
 
-        val (code, body) = httpRequest.withGET(url)
+        val (code, body) = accuWeather.httpRequest.withGET(
+            createRequest(requestParams, "/cities/ipaddress")
+        )
 
         return when (code) {
             200 -> body

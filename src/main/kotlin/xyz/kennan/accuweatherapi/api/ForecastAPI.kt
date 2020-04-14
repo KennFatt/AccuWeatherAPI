@@ -2,7 +2,7 @@ package xyz.kennan.accuweatherapi.api
 
 import xyz.kennan.accuweatherapi.AccuWeather
 
-class ForecastAPI (aw: AccuWeather) : BaseAPI(aw) {
+class ForecastAPI (aw: AccuWeather) : BaseAPI(aw, "http://dataservice.accuweather.com/forecasts/v1") {
 
     fun getDailyForecast(locationKey: String, days: Int = 1, language: String = "en-us", details: Boolean = false, metric: Boolean = false): String? {
         val daysInString = when (days) {
@@ -12,14 +12,16 @@ class ForecastAPI (aw: AccuWeather) : BaseAPI(aw) {
             else -> "1day"
         }
 
-        val url =
-            "http://dataservice.accuweather.com/forecasts/v1/daily/${daysInString}/${locationKey}" +
-                    "?apikey=${accuWeather.apiKey}" +
-                    "&language=${language}" +
-                    "&details=${details}" +
-                    "&metric=${metric}"
+        val requestParams = hashMapOf<String, Any>(
+            "apikey" to accuWeather.apiKey,
+            "language" to language,
+            "details" to details,
+            "metric" to metric
+        )
 
-        val (code, body) = httpRequest.withGET(url)
+        val (code, body) = accuWeather.httpRequest.withGET(
+            createRequest(requestParams, additionalEndPoint = "/daily/${daysInString}/${locationKey}")
+        )
 
         return when (code) {
             200 -> body
@@ -36,14 +38,16 @@ class ForecastAPI (aw: AccuWeather) : BaseAPI(aw) {
             else -> "1hour"
         }
 
-        val url =
-            "http://dataservice.accuweather.com/forecasts/v1/hourly/${hoursInString}/${locationKey}" +
-                    "?apikey=${accuWeather.apiKey}" +
-                    "&language=${language}" +
-                    "&details=${details}" +
-                    "&metric=${metric}"
+        val requestParams = hashMapOf<String, Any>(
+            "apikey" to accuWeather.apiKey,
+            "language" to language,
+            "details" to details,
+            "metric" to metric
+        )
 
-        val (code, body) = httpRequest.withGET(url)
+        val (code, body) = accuWeather.httpRequest.withGET(
+            createRequest(requestParams, additionalEndPoint = "/hourly/${hoursInString}/${locationKey}")
+        )
 
         return when (code) {
             200 -> body
