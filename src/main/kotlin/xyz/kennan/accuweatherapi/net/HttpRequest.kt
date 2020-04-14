@@ -1,6 +1,5 @@
 package xyz.kennan.accuweatherapi.net
 
-import java.io.IOException
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -23,7 +22,6 @@ class HttpRequest {
                     }
                 }
             }
-        } catch (e: IOException) {
         } finally {
             return HttpResponse(httpResponseCode, httpResponseBody)
         }
